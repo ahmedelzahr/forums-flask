@@ -19,7 +19,6 @@ def topic_add():
 @app.route("/tobic/delete/<id>")
 def topic_delete(id):
     post_store.delete(int(id))
-    print id
     return redirect(url_for("home"))
 
 @app.route("/tobic/edit/<id>", methods = ["GET", "POST"])  
@@ -37,7 +36,6 @@ def topic_edit(id):
 @app.route("/tobic/show/<id>", methods = ["GET", "POST"])  
 def topic_show(id):
     if request.method == "POST":
-    	print "back"
         return redirect(url_for("home"))
 
     else:
