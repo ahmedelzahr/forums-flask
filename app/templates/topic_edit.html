@@ -1,4 +1,4 @@
-<form action={{"/tobic/edit/"+po.id.__str__()}} method="post">
+<form action={{ url_for('topic_edit', id = po.id) }} method="post">
 	<input type="text" name="title" value={{po.title}} />
 	<textarea name="content">{{po.subject}}</textarea>
 	<button value="create">Edit </button> 
