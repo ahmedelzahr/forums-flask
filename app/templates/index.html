@@ -30,14 +30,22 @@
     <col width="130">
   <tr>
     <th align="left">Titel </th>
+    <th align="left">Show </th>
     <th align="left">Edit</th> 
     <th align="left">Delete</th>
   </tr>
   {% for post in posts %}
   <tr>
     <td>{{post.title}}</td>
-    <td><button>edit</button></td>
-    <td><button>delete</button></td>
+    <td>
+      <a href={{"tobic/show/"+post.id.__str__()}}>show</a>
+  </td>
+    <td>
+      <a href={{"tobic/edit/"+post.id.__str__()}}>edit</a>
+  </td>
+  <td>
+    <a href={{"tobic/delete/"+post.id.__str__()}}>delete</a>
+  </td>
   </tr>
   {% endfor %}
   
