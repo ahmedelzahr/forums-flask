@@ -1,8 +1,9 @@
 <!doctype html>
-<link rel="stylesheet" type="text/css" href="/static/style.css" >
-<link rel="shortcut icon" href="#" />
-<meta charset="UTF-8">
+
+
 <head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="/static/style.css" >
 	<title>My 1st page</title>
   <h4>done by:Ahmed Elzahar</h4>
 
@@ -40,13 +41,13 @@
   <tr>
     <td>{{post.title}}</td>
     <td>
-      <a href={{"tobic/show/"+post.id.__str__()}}>show</a>
+      <a href="{{ url_for('topic_show', id = post.id) }}">show</a>
   </td>
     <td>
-      <a href={{"tobic/edit/"+post.id.__str__()}}>edit</a>
+      <a href="{{ url_for('topic_edit', id = post.id) }}">edit</a>
   </td>
   <td>
-    <a href={{"tobic/delete/"+post.id.__str__()}}>delete</a>
+    <a href="{{ url_for('topic_delete', id = post.id) }}">delete</a>
   </td>
   </tr>
   {% endfor %}

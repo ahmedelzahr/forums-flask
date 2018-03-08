@@ -19,25 +19,23 @@ def topic_add():
 @app.route("/tobic/delete/<id>")
 def topic_delete(id):
     post_store.delete(int(id))
-    print id
     return redirect(url_for("home"))
 
-@app.route("/tobic/edit/<id>", methods = ["GET", "POST"])  
+@app.route("/topic/edit/<int:id>" , methods = ["GET", "POST"] )
 def topic_edit(id):
     if request.method == "POST":
-    	post=post_store.get_by_id(int(id))
+        post = post_store.get_by_id(id)
         post.title = request.form["title"]
-        post.subject=request.form["content"]
+        post.topic = request.form["content"]
         post_store.update(post)
         return redirect(url_for("home"))
-
     else:
-        return render_template("topic_edit.html",po=post_store.get_by_id(int(id)))
+        post = post_store.get_by_id(id)
+        return render_template("topic_edit.html", post=post)
 
 @app.route("/tobic/show/<id>", methods = ["GET", "POST"])  
 def topic_show(id):
     if request.method == "POST":
-    	print "back"
         return redirect(url_for("home"))
 
     else:
