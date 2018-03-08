@@ -1,5 +1,22 @@
-<form action={{ url_for('topic_edit', id = po.id) }} method="post">
-	<input type="text" name="title" value={{po.title}} />
-	<textarea name="content">{{po.subject}}</textarea>
-	<button value="create">Edit </button> 
-</form>
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Topic edit</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+<div class="input-form">
+	{% block content %}
+        <form action="{{url_for('topic_edit', id=post.id)}}" method="POST">
+            <input type="text" name="title" value="{{post.title}}">
+            <input type="text" name="content" value="{{post.topic}}">
+            <input type="submit" value="update"/>
+
+            </form>
+    {% endblock %}
+</div>
+</body>
+</html>
