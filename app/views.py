@@ -2,6 +2,7 @@
 from flask import render_template,request,redirect ,url_for,jsonify
 from app import models
 from app import app, member_store, post_store
+
 @app.route("/")
 def home():
     return render_template("index.html",posts=post_store.get_all())
@@ -41,15 +42,4 @@ def topic_show(id):
     else:
         return render_template("topic_show.html",po=post_store.get_by_id(int(id)))        
 
-@app.route("/api/topic/all")
-def topic_get_all():
-    posts=[post.__dict__ for post in post_store.get_all()]
-    return jsonify(posts)
-
-@app.route("/api/topic/add",methods=["POST"])
-def topic_create():
-    request_data=request.get_json()
-    new_post=models.Post(request_data["title"],request_data["content"])
-    post_store.add(new_post)
-    return jsonify(new_post.__dict__)
 
