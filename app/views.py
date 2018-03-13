@@ -28,17 +28,15 @@ def topic_delete(id):
 #-----------------------------------------------------------------------
 @app.route("/topic/edit/<int:id>" , methods = ["GET", "POST"] )
 def topic_edit(id):
+    post = post_store.get_by_id(id)
     if post is None:
         abort(404,"this id is not exist")
-
     if request.method == "POST":
-        post = post_store.get_by_id(id)
         post.title = request.form["title"]
         post.topic = request.form["content"]
         post_store.update(post)
         return redirect(url_for("home"))
     else:
-        post = post_store.get_by_id(id)
         return render_template("topic_edit.html", post=post)
 #-----------------------------------------------------------------------
 @app.route("/tobic/show/<int:id>", methods = ["GET", "POST"])  
