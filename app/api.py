@@ -17,12 +17,12 @@ def topic_create():
     return jsonify(new_post.__dict__)
 #-----------------------------------------------------------------------
 
-@app.route("/api/topic/edit/<int:id>" , methods = [ "POST"] )
+@app.route("/api/topic/edit/<int:id>" , methods = [ "PUT"] )
 def topic_modrfy(id):
     post = post_store.get_by_id(id)
     request_data=request.get_json()
     if post is None:
-        abort(400,"this id is not exist")
+        abort(404,"this id is not exist")
     if request.method == "POST":
         post.title = request_data["title"]
         post.topic = request_data["content"]
@@ -30,7 +30,7 @@ def topic_modrfy(id):
         return jsonify(post.__dict__)
 #-----------------------------------------------------------------------
 
-@app.route("/abi/tobic/delete/<int:id>")
+@app.route("/api/topic/delete/<int:id>", methods=['DELETE'])
 def topic_remove(id):
     try:
     	post = post_store.get_by_id(id)
@@ -41,12 +41,11 @@ def topic_remove(id):
     
 #-----------------------------------------------------------------------
 
-@app.route("/abi/tobic/show/<int:id>")  
+@app.route("/abi/tobic/show/<int:id>",methods=['GET'])  
 def topic_view(id):
     post = post_store.get_by_id(id)
-    request_data=request.get_json()
     if post is None:
-        abort(400,"this id is not exist")
+        abort(404,"this id is not exist")
     return jsonify(post.__dict__)        
 #-----------------------------------------------------------------------
     
