@@ -1,5 +1,48 @@
+<!doctype html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/static/style.css" >
+
+
+</head>
+<body>
 <form action="{{ url_for("topic_add") }}" method="post">
 	<input type="text" name="title"  />
 	<input type="text"  name="content"  />
-	<button value="create">"Create" </button> 
+	<button id="submit" value="create">"Create" </button> 
 </form>
+</body>
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+ <script>
+    $(function ()
+    {
+        $("form").submit(function (event)
+        {
+            var topicTitle = $("input[name='title']").val();
+            var topicContent = $("input[name='content']").val();
+            var topicData = {
+                "title": topicTitle,
+                "content": topicContent
+                };
+            $.ajax({
+                type: "POST",
+                url: "/api/topic/add",
+                data: JSON.stringify(topicData),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response)
+                    {
+                        alert("Added topic successfully !");
+                    }
+                });            
+            event.preventDefault();
+            
+        });
+
+    });
+    
+    
+</script> 
