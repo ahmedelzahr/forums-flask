@@ -11,15 +11,14 @@
 <body>
   <div id="my_header">
     <h1>My firest site</h1>
-	<button type="button"> 
+ 
 		<a href="#profile">Profile</a>
-	</button>
-	<button type="button"> 
+	
 		<a href="#members">Members</a>
-	</button>
-	<button type="button"> 
+	
+	
 		<a href="#top">Top Members</a>
-	</button>
+
 </div>
   
 	<hr>
@@ -39,7 +38,7 @@
   </tr>
   {% for post in posts %}
   <tr>
-    <td>{{post.title}}</td>
+    <td id="post id:{{post.id}}"></td>
     <td>
       <a href="{{ url_for('topic_show', id = post.id) }}">show</a>
   </td>
@@ -68,23 +67,32 @@
         {
          
              var id = $(this).val();
-           
             var url1 = "/api/topic/delete/" + id;
-            
             
             $.ajax({
                 type: "DELETE",
                 url: url1,
                 success: function (response)
                     {
-                        alert(url1);
+                        alert("item deleted");
                     }
                 });            
-            
             
         });
 
     });
     
-    
+    $.ajax({
+  dataType: "json",
+  url: "/api/topic/all",
+  cache:false,
+  success: function (data)
+         {
+         $(data).each(function(index,value){
+              document.getElementById("post id:"+value.id).innerHTML = value.title;
+              
+         });
+         }
+});
 </script> 
+
