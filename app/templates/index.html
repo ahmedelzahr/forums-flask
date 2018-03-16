@@ -40,7 +40,7 @@
     $.ajax({
   dataType: "json",
   url: "/api/topic/all",
-
+  
   success: function (data)
          {
                 table +='<table>';
@@ -70,19 +70,23 @@
          }
 
 });
+
+</script>
+<script >
     $(function ()
     {
         
         $(".delete_button").click(function (event)
-        {
+        {   
+          event.preventDefault();
          
              var id = $(this).val();
             var url1 = "/api/topic/delete/" + id;
-            
+
             $.ajax({
                 type: "DELETE",
                 url: url1,
-                cache:false,
+                
                 success: function (response)
                     {
                         alert(url1);
