@@ -40,7 +40,7 @@
     $.ajax({
   dataType: "json",
   url: "/api/topic/all",
-  cache:false,
+
   success: function (data)
          {
                 table +='<table>';
@@ -82,6 +82,7 @@
             $.ajax({
                 type: "DELETE",
                 url: url1,
+                cache:false,
                 success: function (response)
                     {
                         alert(url1);
