@@ -1,104 +1,138 @@
-<!doctype html>
+  <!doctype html>
 
-<html>
-<head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" type="text/css" href="/static/style.css" >
-	<title>My 1st page</title>
-  <h4>done by:Ahmed Elzahar</h4>
+  <html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/static/style.css" >
+    <title>My 1st page</title>
+    <h4>done by:Ahmed Elzahar</h4>
 
-</head>
-<body>
-  <div id="my_header">
-    <h1>My firest site</h1>
- 
-		<a href="#profile">Profile</a>
-	
-		<a href="#members">Members</a>
-	
-	
-		<a  href="#top">Top Members</a>
-
-</div>
-  
-	<hr>
-	<button type="button"> 
-		<a href="/topic/add">Create</a>
-	</button>
-	<ul>
-<div id='table'>
-</div>
-</ul>
-</body>
-<footer>
-<script
-  src="https://code.jquery.com/jquery-3.3.1.min.js"
-  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous">
- </script>
- <script>
+  </head>
+  <body>
+    <div id="my_header">
+      <h1>My firest site</h1>
+      <a href="#profile">Profile</a>
+      <a href="#members">Members</a>
+      <a  href="#top">Top Members</a>
+    </div>
+    <hr>
+    <button type="button"> 
+      <a href="/topic/add">Create</a>
+    </button>
+    <ul>
+      <table id="table">
+        <col width="130">
+        <col width="130">
+        <col width="130">
+        <tr>
+          <th align="left">Titel </th>
+          <th align="left">Show </th>
+          <th align="left">Edit</th>
+          <th align="left">Delete</th>
+        </tr>
+        
+        </div>
+      </table>
+    </ul>
+  </body>
+  <footer>
+    <script
+    src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous">
+  </script>
+  <script>
    var table='';
-    $.ajax({
-  dataType: "json",
-  url: "/api/topic/all",
-  
-  success: function (data)
-         {
-                table +='<table>';
-                table +='<col width="130">';
-                table += '<col width="130">';
-                table += '<col width="130">';
-                table +='<tr>';
-                table +='<th align="left">Titel </th>';
-                table +='<th align="left">Show </th>';
-                table += '<th align="left">Edit</th>';
-                table += '<th align="left">Delete</th>';
-                table +='</tr>';
-         $(data).each(function(index,value){
+   $.ajax({
+    dataType: "json",
+    url: "/api/topic/all",
+    cache:false,
+    success: function (data)
+    {
+      
 
-                table +='<tr>';
-                table +='<td>'+value.title+'</td>';
-                table +='<td ><a href="/api/topic/show/'+value.id+'">show </a></td>';
-                table +='<td ><a href="/topic/edit/'+value.id+'">edit </a></td>';
-                table +='<td ><button class="delete_button" '+'value='+value.id+'>delete </button></td>';
-                table +='</tr>';
-                              
-          
-              
-         });
-          table +='</table>'
-         document.getElementById("table").innerHTML = table;
-         }
+      $(data).each(function(index,value){
 
-});
+        var row=document.createElement("TR")
+        //add cells title
+        var title=document.createElement("TD");
+        var title_node=document.createTextNode(value.title);
+        title.appendChild(title_node);
+        //add show link cells
+        var show=document.createElement("TD");
+        var show_link=document.createElement("A");
+        var show_href="/topic/show/"+value.id;
+        show_link.setAttribute("href", show_href);
+        var show_node=document.createTextNode('show');
+        show_link.appendChild(show_node);
+        var show=document.createElement("TD");
+        show.appendChild(show_link);
+
+        var Edit=document.createElement("TD");
+        var Edit_link=document.createElement("A");
+        var Edit_href="/topic/edit/"+value.id;
+        Edit_link.setAttribute("href", Edit_href);
+        var Edit_node=document.createTextNode('Edit');
+        Edit_link.appendChild(Edit_node);
+        var Edit=document.createElement("TD");
+        Edit.appendChild(Edit_link);
+
+        var Edit=document.createElement("TD");
+        var Edit_link=document.createElement("A");
+        var Edit_href="/topic/edit/"+value.id;
+        Edit_link.setAttribute("href", Edit_href);
+        var Edit_node=document.createTextNode('Edit');
+        Edit_link.appendChild(Edit_node);
+        Edit.appendChild(Edit_link);
+
+        var delete_cell=document.createElement("TD");
+        var delete_button=document.createElement("BUTTON");
+        delete_button.setAttribute("id", value.id);
+        delete_button.setAttribute("class", 'delete_button');
+        var delete_node=document.createTextNode('Delete');
+        delete_button.appendChild(delete_node);
+        delete_cell.appendChild(delete_button);
+
+        row.appendChild(title)
+        row.appendChild(show)
+        row.appendChild(Edit)
+        row.appendChild(delete_button)
+        document.getElementById("table").appendChild(row);
+
+        
+      });
+      
+     
+    }
+
+  });
 
 </script>
 <script >
-    $(function ()
-    {
-        
-        $(".delete_button").click(function (event)
-        {   
-          event.preventDefault();
-         
-             var id = $(this).val();
-            var url1 = "/api/topic/delete/" + id;
+  $(function ()
+  {
 
-            $.ajax({
-                type: "DELETE",
-                url: url1,
-                
-                success: function (response)
-                    {
-                        alert(url1);
-                    }
-                });            
-            
-        });
+    $(".delete_button").click(function (event)
+    {   
+      event.preventDefault();
+
+      var id = $(".delete_button").attr('id');
+      var url1 = "/api/topic/delete/" + id;
+
+      $.ajax({
+        type: "DELETE",
+        url: url1,
+        success: function (response)
+        {
+          alert(url1);
+        }
+      });            
 
     });
-   
-    
+
+  });
+
+
 </script> 
 </footer>
 </html>

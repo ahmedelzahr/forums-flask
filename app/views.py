@@ -39,7 +39,7 @@ def topic_edit(id):
     else:
         return render_template("topic_edit.html", post=post)
 #-----------------------------------------------------------------------
-@app.route("/tobic/show/<int:id>", methods = ["GET", "POST"])  
+@app.route("/topic/show/<int:id>", methods = ["GET", "POST"])  
 def topic_show(id):
     post=post_store.get_by_id(id)
     if post is None:
