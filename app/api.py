@@ -41,7 +41,7 @@ def topic_remove(id):
     
 #-----------------------------------------------------------------------
 
-@app.route("/abi/tobic/show/<int:id>",methods=['GET'])  
+@app.route("/api/topic/show/<int:id>",methods=['GET'])  
 def topic_view(id):
     post = post_store.get_by_id(id)
     if post is None:
