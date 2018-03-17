@@ -41,9 +41,11 @@
     integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
     crossorigin="anonymous">
   </script>
-  <script>
-   var table='';
-   $.ajax({
+
+<script >
+  $(function ()
+  {
+       $.ajax({
     dataType: "json",
     url: "/api/topic/all",
     cache:false,
@@ -106,11 +108,6 @@
     }
 
   });
-
-</script>
-<script >
-  $(function ()
-  {
 
     $(".delete_button").click(function (event)
     {   
