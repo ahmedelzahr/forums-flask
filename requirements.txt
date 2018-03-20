@@ -1,4 +1,4 @@
 Flask==0.12.2
 Gunicorn==19.7.1
 Flask-SQLAlchemy==2.3.2
-psycopg2==2.7.4
+psycopg==2.7.4
