@@ -1,46 +1,41 @@
-import itertools
+from app import models, db
+from sqlalchemy import desc, func
+
 class BaseStore():
-  def __init__(self,data_provider, last_id):
-    self.data_provider=data_provider
-    self.last_id=last_id
+  def __init__(self, data_provider):
+        self.data_provider = data_provider
+
   def get_all(self):
-    return self.data_provider
+    return self.data_provider.query.all()
 
   def add(self, item):
       # append member
-        item.id=self.last_id
-        self.data_provider.append(item)
-        self.last_id +=1
-
-  def entity_exists(self, item):
-      # checks if an entity exists in a store
-    return item in self.get_all()
+        db.session.add(item)
+        db.session.commit()
+        return item
 
   def get_by_id(self, id):
-      # search for item by id
-      result=None
-      for item in self.get_all():
-        if item.id==id:
-          result=item
-          break
-      return result
-      
+      return self.data_provider.query.get(id)
+    
 
   def delete(self, id):
      # delete item by id
-    item=self.get_by_id(id) 
-    self.data_provider.remove(item)
+    result = self.data_provider.query.filter_by(id = id).delete()
+    db.session.commit()
+    return result
 
-  def update(self, item):
-     result = item
-     all_items = self.get_all()
+  def update(self, item, fields):
+        result = self.data_provider.query.filter_by(id = item.id).update(fields)
+        db.session.commit()
+        return result
 
-     for index, current_item in enumerate(all_items):
-         if current_item.id == item.id:
-             all_items[index] = item
-             break
+  def entity_exists(self, item):
+        result = True
 
-     return result
+        if self.get_by_id(item.id) is None:
+            result = False
+
+        return result
   
 
 #---------------------------------------------------------------------------------------    
@@ -48,31 +43,26 @@ class BaseStore():
 class MemberStore(BaseStore):
 
 
-  members = []
-  last_id=1
+ 
   def __init__(self):
-        BaseStore.__init__(self,MemberStore.members, MemberStore.last_id)
+        BaseStore.__init__(self,models.Member)
 
   #def __contains__(self, id):
     #return self.get_by_id(id)!=None
       
-  def get_by_name(self,name):
-    for member in self.get_all():
-      if member.name==name:
-        yield member      
+  def get_by_name(self, member_name):
+        return self.data_provider.query.filter_by(name = member_name)     
 
 
-  def get_members_with_posts(self,all_post):
-    all_members=self.get_all()
-    for member, post in itertools.product(all_members, all_post):
-      if member.id==post.member_id:
-        member.posts.append(post)
-          #self.update(member)  
-    return self.get_all() 
+  def update(self, item):
+        fields = {"name": item.name, "age": item.age}
+        return super().update(entity, fields)
 
-  def  get_top_two(self,all_post):
-    sorted_members=sorted(self.get_members_with_posts(all_post))
-    return sorted_members[:2]
+  def get_members_with_posts(self):
+        return self.data_provider.query.join(models.Member.posts)
+
+  def get_top_two(self):
+        return self.data_provider.query(func.count(models.Member.posts).label('total')).order_by('total DESC')
 
         
 
@@ -80,14 +70,12 @@ class MemberStore(BaseStore):
 
 class PostStore(BaseStore):
 
-  posts = []
-  last_id=1
+
   def __init__(self):
-        BaseStore.__init__(self,PostStore.posts, PostStore.last_id)
-  def get_posts_by_date(self):
-    all_posts=self.get_all()
-    posts_sorted_byDate=sorted(all_posts, key=lambda post: post.date)
-    return posts_sorted_byDate     
+        BaseStore.__init__(self,models.Post)
+  def update(self, entity):
+        fields = {"title": entity.title, "content": entity.content}
+        return super().update(entity, fields)   
 
         
 
