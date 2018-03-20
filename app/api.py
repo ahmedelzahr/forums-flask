@@ -14,7 +14,7 @@ def topic_create():
     request_data=request.get_json()
     new_post=models.Post(title=request_data["title"],content=request_data["content"])
     post_store.add(new_post)
-    return jsonify(new_post.__dict__)
+    return jsonify(new_post.as_dict())
 #-----------------------------------------------------------------------
 
 @app.route("/api/topic/edit/<int:id>" , methods = [ "PUT"] )
@@ -27,7 +27,7 @@ def topic_modrfy(id):
         post.title = request_data["title"]
         post.topic = request_data["content"]
         post_store.update(post)
-        return jsonify(post.__dict__)
+        return jsonify(post.as_dict())
 #-----------------------------------------------------------------------
 
 @app.route("/api/topic/delete/<int:id>", methods=['DELETE'])
